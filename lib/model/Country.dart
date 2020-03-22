@@ -1,11 +1,11 @@
 class Country {
   final String name;
-  final int totalCases;
-  final int newCases;
-  final int totalDeaths;
-  final int newDeaths;
-  final int totalRecovered;
-  final int activeCases;
+  final String totalCases;
+  final String newCases;
+  final String totalDeaths;
+  final String newDeaths;
+  final String totalRecovered;
+  final String activeCases;
 
   Country(
       {this.name,
@@ -18,12 +18,12 @@ class Country {
 
   factory Country.fromJson(Map<String, dynamic> json) {
     return Country(
-        name: json['result[country]'],
-        totalCases: json['result[0][1]'],
-        newCases: json['result[0][2]'],
-        totalDeaths: json['result[0][3]'],
-        newDeaths: json['result[0][4]'],
-        totalRecovered: json['result[0][5]'],
-        activeCases: json['result[0][6]']);
+        name: json['country'],
+        totalCases: json['totalcases'],
+        newCases: json['newCases'],
+        totalDeaths: json['totaldeaths'],
+        newDeaths: json['newDeaths'],
+        totalRecovered: json['totalRecovered'],
+        activeCases: json['activeCases']);
   }
 }
