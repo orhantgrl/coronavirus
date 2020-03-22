@@ -1,5 +1,5 @@
 import 'package:coronavirus/api/client.dart';
-import 'package:coronavirus/model/Country.dart';
+import 'package:coronavirus/model/Api.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
@@ -10,8 +10,8 @@ void main() {
     });
 
     var client = WebService(token: token);
-    await client.fetchCountries().then((Country country) {
-      expect('China', country.name);
+    await client.fetchCountries().then((Api api) {
+      expect('China', api.countiries[0].name); // Passed
     });
   });
 }
