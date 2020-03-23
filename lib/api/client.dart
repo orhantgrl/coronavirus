@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:coronavirus/model/Api.dart';
+import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 
 class WebService {
@@ -25,6 +26,7 @@ class WebService {
 }
 
 Future<String> getApplicationToken() async {
-  final parsedJson = jsonDecode(await File('lib/api/config.json').readAsString());
+  final parsedJson =
+      jsonDecode(await rootBundle.loadString('assets/config.json'));
   return parsedJson['token'];
 }
