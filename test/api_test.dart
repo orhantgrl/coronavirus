@@ -11,7 +11,7 @@ void main() {
 
     var client = WebService(token: token);
     await client.fetchCountries().then((Api api) {
-      expect('China', api.countiries[0].name); // Passed
+      expect('China', api.countries[0].name); // Passed
     });
   });
 }
