@@ -19,9 +19,9 @@ class Country {
   factory Country.fromJson(Map<String, dynamic> json) {
     return Country(
         name: json['country'],
-        totalCases: json['totalcases'],
+        totalCases: json['totalCases'],
         newCases: json['newCases'],
-        totalDeaths: json['totaldeaths'],
+        totalDeaths: json['totalDeaths'],
         newDeaths: json['newDeaths'],
         totalRecovered: json['totalRecovered'],
         activeCases: json['activeCases']);
