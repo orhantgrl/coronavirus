@@ -1,7 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:coronavirus/model/Country.dart';
+import 'package:coronavirus/model/Api.dart';
+import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 
 class WebService {
@@ -10,21 +11,22 @@ class WebService {
 
   WebService({this.token});
 
-  Future<Country> fetchCountries() async {
+  Future<Api> fetchCountries() async {
     final response = await http.get(url, headers: {
       HttpHeaders.contentTypeHeader: 'application/json',
       HttpHeaders.authorizationHeader: token
     });
 
     if (response.statusCode == 200) {
-      return Country.fromJson(json.decode(response.body));
+      return Api.fromJson(jsonDecode(response.body));
     } else {
-      throw new Exception('Client error');
+      throw Exception('Client error');
     }
   }
 }
 
 Future<String> getApplicationToken() async {
-  final json = jsonDecode(await new File('lib/api/config.json').readAsString());
-  return json['token'];
+  final parsedJson =
+      jsonDecode(await rootBundle.loadString('assets/config.json'));
+  return parsedJson['token'];
 }

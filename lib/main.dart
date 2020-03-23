@@ -10,7 +10,9 @@ class Application extends StatelessWidget {
       title: 'Corona Virus Tracker',
       debugShowCheckedModeBanner: false,
       theme:
-          ThemeData(primaryColor: Colors.black, accentColor: Colors.deepPurple),
+          ThemeData(
+              primaryColor: Colors.black,
+              accentColor: Colors.deepPurple),
       home: HomePage(title: 'Corona Virus Tracker'),
     );
   }
