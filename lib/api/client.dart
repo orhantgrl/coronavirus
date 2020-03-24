@@ -7,9 +7,7 @@ import 'package:http/http.dart' as http;
 
 class WebService {
   final String url = 'https://api.collectapi.com/corona/countriesData';
-  final String token;
-
-  WebService({this.token});
+  String token;
 
   Future<Api> fetchCountries() async {
     final response = await http.get(url, headers: {
