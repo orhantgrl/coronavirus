@@ -13,7 +13,7 @@ class Application extends StatelessWidget {
           ThemeData(
               primaryColor: Colors.black,
               accentColor: Colors.deepPurple),
-      home: HomePage(title: 'Corona Virus Tracker'),
+      home: HomePage(title: '#StayAtHomeSaveLives'),
     );
   }
 }
