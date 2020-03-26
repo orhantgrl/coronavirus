@@ -10,7 +10,7 @@
 
     <application
         android:name="io.flutter.app.FlutterApplication"
-        android:label="coronavirus"
+        android:label="Corona Virus Tracker"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
