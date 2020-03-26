@@ -1,10 +1,11 @@
+import 'package:coronavirus/page/aboutme.dart';
 import 'package:coronavirus/page/home.dart';
+import 'package:coronavirus/page/stats.dart';
 import 'package:flutter/material.dart';
 
 class WidgetRoot extends StatefulWidget {
-  final String title;
-  
-  WidgetRoot({Key key, this.title}) : super(key: key);
+
+  WidgetRoot({Key key}) : super(key: key);
 
   @override
   _WidgetRootState createState() => _WidgetRootState();
@@ -12,13 +13,24 @@ class WidgetRoot extends StatefulWidget {
 
 class _WidgetRootState extends State<WidgetRoot> {
   int _selectedIndex = 0;
-  static List<Widget> _pages = <Widget>[
+  String _selectedTitle = "#StayAtHomeSaveLives";
+
+  final List<String> _titles = <String>[
+    '#StayAtHomeSaveLives',
+    'Stats',
+    'About Me'
+  ];
+
+  final List<Widget> _pages = <Widget>[
     HomePage(),
+    StatsPage(),
+    AboutMePage()
   ];
 
   _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
+      _selectedTitle = _titles[index];
     });
   }
 
@@ -26,24 +38,27 @@ class _WidgetRootState extends State<WidgetRoot> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        title: Text(_selectedTitle),
         centerTitle: true,
       ),
-      body: _pages.elementAt(_selectedIndex),
+      body: IndexedStack(
+        index: _selectedIndex,
+        children: _pages,
+      ),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
-            title: Text("Home")
+            title: Text("Home"),
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.insert_chart),
-            title: Text("Stats")
+            title: Text("Stats"),
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.info),
-            title: Text("Info")
-          )
+            title: Text("About Me"),
+          ),
         ],
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,
