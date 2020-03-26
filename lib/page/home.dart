@@ -1,155 +1,216 @@
-import 'package:flutter/material.dart';
-
 import 'package:coronavirus/api/client.dart';
-import 'package:coronavirus/model/Api.dart';
+import 'package:coronavirus/model/CountriesData.dart';
 import 'package:coronavirus/model/Country.dart';
-import 'package:flutter/services.dart';
+import 'package:coronavirus/widget/error.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class HomePage extends StatefulWidget {
-  final String title;
-
-  HomePage({this.title});
+  HomePage({Key key}) : super(key: key);
 
   @override
   _HomePageState createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
-  WebService webService;
+class _HomePageState extends State<HomePage>
+    with AutomaticKeepAliveClientMixin<HomePage> {
+  Future<CountriesData> _response;
+  WebService webService = WebService();
 
-  _HomePageState() {
+  @override
+  void initState() {
+    super.initState();
     getApplicationToken().then((val) => setState(() {
-          webService = WebService(token: val);
+          webService.token = val;
+          _response = webService.fetchCountriesData();
         }));
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: Center(
-        child: FutureBuilder<Api>(
-          future: webService.fetchCountries(),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.done) {
-              if (snapshot.hasError) {
-                return SomethingWentWrong(
-                  errorMessage: snapshot.error.toString(),
-                );
-              }
-              return ListView.builder(
-                  itemCount: snapshot.data.countries.length,
-                  itemBuilder: (context, index) {
-                    return _countryCard(snapshot.data.countries, index);
-                  });
-            } else {
-              return CircularProgressIndicator();
-            }
-          },
-        ),
-      ),
-    );
+  bool get wantKeepAlive => true;
+
+  void _callback() {
+    setState(() {
+      _response = webService.fetchCountriesData();
+    });
   }
-}
-
-class SomethingWentWrong extends StatelessWidget {
-  final String errorMessage;
-
-  SomethingWentWrong({this.errorMessage});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.fromLTRB(32.0, 16.0, 32.0, 16.0),
-      child: Column(
-        children: <Widget>[
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Image(
-                image: AssetImage('graphics/error-404.png'),
-                width: 250,
-                height: 250,
-              )
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Flexible(
-                child: Padding(
-                  padding: EdgeInsets.all(8),
-                  child: Text(
-                    "Oops Something Went't Wrong",
-                    style: TextStyle(
-                        color: Colors.black87,
-                        fontSize: 15.0,
-                        fontWeight: FontWeight.bold),
-                  ),
-                ),
-              ),
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Flexible(
-                child: Padding(
-                  padding: EdgeInsets.fromLTRB(8.0, 0.0, 8.0, 32.0),
-                  child: Text(
-                    errorMessage,
-                    style: TextStyle(color: Colors.black87, fontSize: 15.0),
-                  ),
-                ),
-              ),
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Container(
-                width: 250.0,
-                height: 50.0,
-                child: RaisedButton(
-                  onPressed: () async {
-                    await SystemNavigator.pop();
-                  },
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(45.0),
-                  ),
-                  color: Colors.black,
-                  textColor: Colors.white,
-                  child: Text(
-                    "Try Again",
-                    style: TextStyle(fontSize: 16),
-                  ),
-                ),
-              ),
-            ],
-          )
-        ],
+    super.build(context);
+    return SafeArea(
+      top: true,
+      bottom: true,
+      right: true,
+      left: true,
+      child: FutureBuilder<CountriesData>(
+        future: _response,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.done) {
+            if (snapshot.hasError) {
+              return WidgetError(
+                errorMessage: snapshot.error.toString(),
+                callback: _callback,
+              );
+            }
+            return ListView.builder(
+              physics: BouncingScrollPhysics(),
+              itemCount: snapshot.data.countries.length,
+              itemBuilder: ((context, index) {
+                return _countryCardBuilder(snapshot.data.countries, index);
+              }),
+            );
+          } else {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+        },
       ),
     );
   }
 }
 
-_countryCard(List<Country> countiries, int index) {
-  return Card(
-    elevation: 4.0,
-    margin: EdgeInsets.fromLTRB(8, 8, 8, 0),
-    child: _countryListItem(countiries[index].name),
-  );
-}
+Widget _countryCardBuilder(List<Country> countries, int index) => Card(
+      clipBehavior: Clip.antiAlias,
+      elevation: 3.0,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(8),
+      ),
+      margin: new EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
+      child: Container(
+        decoration: BoxDecoration(),
+        child: _countryCardListTileBuilder(countries, index),
+      ),
+    );
 
-_countryListItem(String countryName) {
-  return ListTile(
-    contentPadding: EdgeInsets.fromLTRB(16, 2, 10, 0),
-    title: Text(
-      countryName,
-      style: TextStyle(fontSize: 24),
-      textAlign: TextAlign.center,
-    ),
-  );
-}
+Widget _countryCardListTileBuilder(List<Country> countries, int index) =>
+    Column(
+      children: <Widget>[
+        // Header
+        Row(
+          children: <Widget>[
+            Expanded(
+              child: Container(
+                padding: EdgeInsets.all(14.0),
+                color: Colors.black26,
+                child: Text(
+                  countries[index].name,
+                  style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
+                ),
+              ),
+            ),
+          ],
+        ),
+
+        // First Row
+        Container(
+          padding: EdgeInsets.all(16.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              Row(
+                children: <Widget>[
+                  SvgPicture.asset(
+                    'graphics/virus.svg',
+                    width: 24.0,
+                    height: 24.0,
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(left: 8),
+                    child: Text(countries[index].totalCases.isEmpty
+                        ? "None"
+                        : countries[index].totalCases),
+                  )
+                ],
+              ),
+              Row(
+                children: <Widget>[
+                  SvgPicture.asset(
+                    'graphics/skull.svg',
+                    width: 24.0,
+                    height: 24.0,
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(left: 8),
+                    child: Text(countries[index].totalDeaths.isEmpty
+                        ? "None"
+                        : countries[index].totalDeaths),
+                  )
+                ],
+              ),
+              Row(
+                children: <Widget>[
+                  SvgPicture.asset(
+                    'graphics/new.svg',
+                    width: 24.0,
+                    height: 24.0,
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(left: 8),
+                    child: Text(countries[index].newCases.isEmpty
+                        ? "None"
+                        : countries[index].newCases),
+                  )
+                ],
+              ),
+            ],
+          ),
+        ),
+
+        // Second Row
+        Container(
+          padding: EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 16.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              Row(
+                children: <Widget>[
+                  SvgPicture.asset(
+                    'graphics/death.svg',
+                    width: 24.0,
+                    height: 24.0,
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(left: 8),
+                    child: Text(countries[index].newDeaths.isEmpty
+                        ? "None"
+                        : countries[index].newDeaths),
+                  )
+                ],
+              ),
+              Row(
+                children: <Widget>[
+                  SvgPicture.asset(
+                    'graphics/recover.svg',
+                    width: 24.0,
+                    height: 24.0,
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(left: 8),
+                    child: Text(countries[index].totalRecovered.isEmpty
+                        ? "None"
+                        : countries[index].totalRecovered),
+                  )
+                ],
+              ),
+              Row(
+                children: <Widget>[
+                  SvgPicture.asset(
+                    'graphics/cough.svg',
+                    width: 24,
+                    height: 24,
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(left: 8),
+                    child: Text(countries[index].activeCases.isEmpty
+                        ? "None"
+                        : countries[index].activeCases),
+                  )
+                ],
+              )
+            ],
+          ),
+        ),
+      ],
+    );
