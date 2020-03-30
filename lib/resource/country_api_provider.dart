@@ -4,15 +4,15 @@ import 'dart:io';
 import 'package:coronavirus/model/CountriesData.dart';
 import 'package:coronavirus/model/TotalData.dart';
 import 'package:flutter/services.dart';
-import 'package:http/http.dart' as http;
+import 'package:http/http.dart' show Client;
 
-class WebService {
-  final String countriesDataUrl = 'https://api.collectapi.com/corona/countriesData';
-  final String totalDataUrl = 'https://api.collectapi.com/corona/totalData';
-  String token;
+class CountryApiProvider {
+  final String _countriesDataUrl = 'https://api.collectapi.com/corona/countriesData';
+  final String _totalDataUrl = 'https://api.collectapi.com/corona/totalData';
+  String token = "apikey 6gLBVEGynBCTttH9nnHZwY:3JPO8ZAofolQDcTERvAp1V";
 
   Future<CountriesData> fetchCountriesData() async {
-    final response = await request(url: countriesDataUrl, token: token);
+    final response = await request(url: _countriesDataUrl, token: token);
 
     if (response.statusCode == 200) {
       return CountriesData.fromJson(jsonDecode(response.body));
@@ -22,7 +22,7 @@ class WebService {
   }
 
   Future<TotalData> fetchTotalData() async {
-    final response = await request(url: totalDataUrl, token: token);
+    final response = await request(url: _totalDataUrl, token: token);
 
     if(response.statusCode == 200) {
       return TotalData.fromJson(jsonDecode(response.body)['result']);
@@ -32,8 +32,9 @@ class WebService {
   }
 }
 
-Future<http.Response> request({String url, String token}) async {
-  return await http.get(url, headers: {
+request({String url, String token}) async {
+  Client client = Client();
+  return await client.get(url, headers: {
     HttpHeaders.contentTypeHeader: 'application/json',
     HttpHeaders.authorizationHeader: token
   });
