@@ -1,12 +1,13 @@
-import 'package:coronavirus/api/client.dart';
-import 'package:coronavirus/model/CountriesData.dart';
+import 'package:coronavirus/resource/country_api_provider.dart';
 import 'package:coronavirus/model/TotalData.dart';
+import 'package:coronavirus/model/CountriesData.dart';
 import 'package:flutter_test/flutter_test.dart';
+
 
 void main() {
   test('Test for countries data', () async {
-    var client = WebService();
-    String token = ""; // Your secret api token :)
+    var client = CountryApiProvider();
+    String token = ''; // Your secret api token :)
 
     client.token = token;
     await client.fetchCountriesData().then((CountriesData api) {
@@ -15,8 +16,8 @@ void main() {
   });
 
   test('Test for total data', () async {
-    var client = WebService();
-    String token = ""; // Your secret api token :)
+    var client = CountryApiProvider();
+    String token = ''; // Your secret api token :)
 
     client.token = token;
     await client.fetchTotalData().then((TotalData data) {
