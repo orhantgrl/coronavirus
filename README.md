@@ -1,4 +1,4 @@
-# coronavirus
+# Corona Virus Tracker
 
 A new way to track corona virus
 
