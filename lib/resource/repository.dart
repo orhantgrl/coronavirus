@@ -1,14 +1,12 @@
-import 'package:coronavirus/resource/country_api_provider.dart';
-
 import 'package:coronavirus/model/CountriesData.dart';
 import 'package:coronavirus/model/TotalData.dart';
+import 'package:coronavirus/resource/api_provider.dart';
 
 class Repository {
-  final CountryApiProvider countryApiProvider = CountryApiProvider();
+  final ApiProvider apiProvider = ApiProvider();
 
   Future<CountriesData> fetchCountriesData() =>
-      countryApiProvider.fetchCountriesData();
+      apiProvider.fetchCountriesData();
 
-  Future<TotalData> fetchTotalData() => 
-      countryApiProvider.fetchTotalData();
+  Future<TotalData> fetchTotalData() => apiProvider.fetchTotalData();
 }
