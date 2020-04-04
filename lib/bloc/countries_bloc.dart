@@ -1,32 +1,38 @@
+import 'package:coronavirus/bloc/bloc.dart';
+import 'package:coronavirus/model/CountriesData.dart';
 import 'package:coronavirus/resource/repository.dart';
 import 'package:rxdart/rxdart.dart';
 
-import 'package:coronavirus/model/CountriesData.dart';
-import 'package:coronavirus/model/TotalData.dart';
-
-class CountriesBloc {
-  final _repository = Repository();
+class CountriesBloc extends Bloc<CountriesData> {
+  final Repository _repository = Repository();
 
   final _countriesFetcher = PublishSubject<CountriesData>();
-  final _totalDataFetcher = PublishSubject<TotalData>();
 
-  Observable<CountriesData> get allCountries => _countriesFetcher.stream;
-  Observable<TotalData> get totalData => _totalDataFetcher.stream;
+  Observable<CountriesData> get countriesData => _countriesFetcher.stream;
 
-  fetchAllCountries() async {
-    CountriesData countriesData = await _repository.fetchCountriesData();
-    _countriesFetcher.sink.add(countriesData);
+  fetchCountries() async {
+    try {
+      CountriesData countriesData = await _repository.fetchCountriesData();
+      addEvent(countriesData);
+    } catch (err) {
+      addError(err);
+    }
   }
 
-  fetchAllTotalData() async {
-    TotalData totalData = await _repository.fetchTotalData();
-    _totalDataFetcher.sink.add(totalData);
+  @override
+  void addEvent(CountriesData event) {
+    _countriesFetcher.sink.add(event);
   }
 
+  @override
+  void addError(err) {
+    _countriesFetcher.addError(err);
+  }
+
+  @override
   void dispose() {
     _countriesFetcher.close();
-    _totalDataFetcher.close();
   }
 }
 
-final bloc = CountriesBloc();
+final countriesBloc = CountriesBloc();
