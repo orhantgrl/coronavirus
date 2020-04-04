@@ -1,7 +1,10 @@
-import 'package:flutter/material.dart';
-
 import 'package:coronavirus/bloc/countries_bloc.dart';
+import 'package:coronavirus/bloc/totalData_bloc.dart';
 import 'package:coronavirus/model/CountriesData.dart';
+import 'package:coronavirus/model/CountriesWithTotalData.dart';
+import 'package:coronavirus/model/TotalData.dart';
+import 'package:coronavirus/widget/root.dart';
+import 'package:flutter/material.dart';
 
 class WidgetSplash extends StatefulWidget {
   @override
@@ -9,72 +12,75 @@ class WidgetSplash extends StatefulWidget {
 }
 
 class _WidgetSplashState extends State<WidgetSplash> {
+  final cwd = CountriesWithTotalData.instance;
+
+  _WidgetSplashState() {
+    countriesBloc.fetchCountries();
+    totalDataBloc.fetchTotalData();
+  }
+
   @override
   Widget build(BuildContext context) {
-    bloc.fetchAllCountries();
-    return Scaffold(
-      body: StreamBuilder(
-        stream: bloc.allCountries,
-        builder: (context, AsyncSnapshot<CountriesData> snapshot) {
-          if (snapshot.connectionState == ConnectionState.done) {
-            if (snapshot.hasError) {
-              return Text("Error");
+    return StreamBuilder(
+      stream: countriesBloc.countriesData,
+      builder: ((context, AsyncSnapshot<CountriesData> snapshot) {
+        return StreamBuilder(
+          stream: totalDataBloc.totalData,
+          builder: ((context, AsyncSnapshot<TotalData> snapshot1) {
+            if (snapshot.hasError && snapshot1.hasError) {
+              countriesBloc.fetchCountries();
+              totalDataBloc.fetchTotalData();
+              return _drawBody(
+                header: "An error occurred. Please Check your connection.",
+              );
+            } else if (snapshot.hasData && snapshot1.hasData) {
+              cwd.countriesData = snapshot.data;
+              cwd.totalData = snapshot1.data;
+              dispose();
+              return WidgetRoot();
+            } else {
+              return _drawBody(
+                header: "Fetching importants data from internet",
+              );
             }
-            return Text("Wow Its Workingg");
-          } else {
-            return _splashBuilder(
-              header: 'Application Is Loading',
-              paragraph: 'Please make sure you have proper internet connection',
-              widget: CircularProgressIndicator(),
-            );
-          }
-        },
-      ),
+          }),
+        );
+      }),
     );
   }
 
-  Widget _splashBuilder(
-          {@required String header,
-          @required String paragraph,
-          @required Widget widget}) =>
-      Center(
-        child: Container(
-          alignment: Alignment.center,
-          padding: EdgeInsets.fromLTRB(32.0, 0.0, 32.0, 16.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Image(
-                image: AssetImage('graphics/hiker.png'),
-                width: 250,
-                height: 250,
-              ),
-              Padding(
-                padding: EdgeInsets.all(8),
-                child: Text(
-                  header,
-                  style: TextStyle(
-                      color: Colors.black87,
-                      fontSize: 15.0,
-                      fontWeight: FontWeight.bold),
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.fromLTRB(8.0, 0.0, 8.0, 32.0),
-                child: Text(
-                  paragraph,
-                  style: TextStyle(color: Colors.black87, fontSize: 15.0),
-                ),
-              ),
-              widget
-            ],
-          ),
-        ),
-      );
-
   @override
   void dispose() {
+    countriesBloc.dispose();
+    totalDataBloc.dispose();
     super.dispose();
-    bloc.dispose();
   }
 }
+
+Widget _drawBody({@required String header}) => Scaffold(
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Image(
+              image: AssetImage('graphics/hiker.png'),
+              width: 250,
+              height: 250,
+            ),
+            Padding(
+              padding: EdgeInsets.fromLTRB(8.0, 0.0, 8.0, 20.0),
+              child: Text(
+                header,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: Colors.black87,
+                  fontSize: 20.0,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+            CircularProgressIndicator(),
+          ],
+        ),
+      ),
+    );
