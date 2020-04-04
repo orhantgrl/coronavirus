@@ -83,7 +83,11 @@ Widget _drawBody() => Container(
             child: Text(
               "A software developer studying at Avrasya University and seeking no reason to be happy." +
                   " Java language lover and a fan of low-level languages.",
-              style: TextStyle(fontSize: 14.0, color: Colors.white),
+              style: TextStyle(
+                fontSize: 14.0,
+                color: Colors.white,
+              ),
+              textAlign: TextAlign.center,
             ),
           ),
           Container(
@@ -140,7 +144,7 @@ Widget _drawBody() => Container(
             ),
           ),
           Container(
-            margin: EdgeInsets.only(top: 28.0),
+            margin: EdgeInsets.only(top: 28.0, bottom: 28.0),
             width: 250.0,
             height: 50.0,
             child: RaisedButton(
