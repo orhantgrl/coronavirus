@@ -1,17 +1,11 @@
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:coronavirus/chart/TotalDataChart.dart';
-import 'package:coronavirus/model/Country.dart';
+import 'package:coronavirus/model/CountriesWithTotalData.dart';
 import 'package:coronavirus/model/TotalData.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class StatsPage extends StatefulWidget {
-  final TotalData totalData;
-  final List<Country> countries;
-
-  StatsPage({Key key, this.totalData, this.countries}) : super(key: key);
-
   @override
   _StatsPageState createState() => _StatsPageState();
 }
@@ -55,7 +49,8 @@ class _StatsPageState extends State<StatsPage>
                 padding: EdgeInsets.only(right: 20.0, top: 10.0),
                 height: 250,
                 child: TotalDataChart.withData(
-                  _createTotalDataChartSeries(widget.totalData),
+                  _createTotalDataChartSeries(
+                      CountriesWithTotalData.instance.totalData),
                 ),
               ),
             ),
