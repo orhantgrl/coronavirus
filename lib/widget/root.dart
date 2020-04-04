@@ -1,9 +1,9 @@
-import 'package:coronavirus/page/aboutme.dart';
+import 'package:coronavirus/bloc/countries_bloc.dart';
+import 'package:coronavirus/bloc/totalData_bloc.dart';
+import 'package:coronavirus/page/about_me.dart';
 import 'package:coronavirus/page/home.dart';
 import 'package:coronavirus/page/stats.dart';
 import 'package:flutter/material.dart';
-
-import '../page/stats.dart';
 
 class WidgetRoot extends StatefulWidget {
   WidgetRoot({Key key}) : super(key: key);
@@ -16,10 +16,21 @@ class _WidgetRootState extends State<WidgetRoot> {
   int _selectedIndex = 0;
   String _selectedTitle = "#StayAtHomeSaveLives";
 
+  _WidgetRootState() {
+    countriesBloc.fetchCountries();
+    totalDataBloc.fetchTotalData();
+  }
+
   final List<String> _titles = <String>[
     '#StayAtHomeSaveLives',
     'Stats',
     'About Me'
+  ];
+
+  final List<Widget> _pages = <Widget>[
+    HomePage(),
+    StatsPage(),
+    AboutMePage(),
   ];
 
   _onItemTapped(int index) {
@@ -31,18 +42,6 @@ class _WidgetRootState extends State<WidgetRoot> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body:_initApp()
-    );
-  }
-
-  Widget _initApp() {
-    final List<Widget> _pages = <Widget>[
-      HomePage(),
-      StatsPage(),
-      AboutMePage(),
-    ];
-
     return Scaffold(
       appBar: AppBar(
         title: Text(_selectedTitle),
@@ -71,5 +70,12 @@ class _WidgetRootState extends State<WidgetRoot> {
         onTap: _onItemTapped,
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    countriesBloc.dispose();
+    totalDataBloc.dispose();
+    super.dispose();
   }
 }
