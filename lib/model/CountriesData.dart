@@ -40,4 +40,9 @@ class Country {
         totalRecovered: json['totalRecovered'],
         activeCases: json['activeCases']);
   }
+
+  @override
+  String toString() {
+    return name;
+  }
 }
