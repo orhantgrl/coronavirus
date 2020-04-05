@@ -5,7 +5,7 @@
 
 <div align="center">
   
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/18f2269cb2ec40d9a4b7309d982ebe29)](https://www.codacy.com/manual/orhantgrl/coronavirus?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=orhantgrl/coronavirus&amp;utm_campaign=Badge_Grade)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/2adebe7770c9465eb9d751ee49959867)](https://www.codacy.com/manual/orhantgrl/coronavirus?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=orhantgrl/coronavirus&amp;utm_campaign=Badge_Grade)
 ![Completion](https://img.shields.io/badge/completion-%25100-succsses)
 ![License](https://img.shields.io/github/license/orhantgrl/coronavirus)
 ![Issues](https://img.shields.io/github/issues/orhantgrl/coronavirus)
