@@ -36,7 +36,6 @@ class _WidgetSplashState extends State<WidgetSplash> {
             } else if (snapshot.hasData && snapshot1.hasData) {
               cwd.countriesData = snapshot.data;
               cwd.totalData = snapshot1.data;
-              dispose();
               return WidgetRoot();
             } else {
               return _drawBody(
@@ -49,38 +48,31 @@ class _WidgetSplashState extends State<WidgetSplash> {
     );
   }
 
-  @override
-  void dispose() {
-    countriesBloc.dispose();
-    totalDataBloc.dispose();
-    super.dispose();
-  }
-}
-
-Widget _drawBody({@required String header}) => Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Image(
-              image: AssetImage('graphics/hiker.png'),
-              width: 250,
-              height: 250,
-            ),
-            Padding(
-              padding: EdgeInsets.fromLTRB(8.0, 0.0, 8.0, 20.0),
-              child: Text(
-                header,
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: Colors.black87,
-                  fontSize: 20.0,
-                  fontWeight: FontWeight.bold,
+  Widget _drawBody({@required String header}) => Scaffold(
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Image(
+                image: AssetImage('graphics/hiker.png'),
+                width: 250,
+                height: 250,
+              ),
+              Padding(
+                padding: EdgeInsets.fromLTRB(8.0, 0.0, 8.0, 20.0),
+                child: Text(
+                  header,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Colors.black87,
+                    fontSize: 20.0,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
-            ),
-            CircularProgressIndicator(),
-          ],
+              CircularProgressIndicator(),
+            ],
+          ),
         ),
-      ),
-    );
+      );
+}
