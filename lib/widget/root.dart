@@ -1,10 +1,11 @@
-import 'package:coronavirus/page/aboutme.dart';
+import 'package:coronavirus/bloc/countries_bloc.dart';
+import 'package:coronavirus/bloc/totalData_bloc.dart';
+import 'package:coronavirus/page/about_me.dart';
 import 'package:coronavirus/page/home.dart';
 import 'package:coronavirus/page/stats.dart';
 import 'package:flutter/material.dart';
 
 class WidgetRoot extends StatefulWidget {
-
   WidgetRoot({Key key}) : super(key: key);
 
   @override
@@ -24,7 +25,7 @@ class _WidgetRootState extends State<WidgetRoot> {
   final List<Widget> _pages = <Widget>[
     HomePage(),
     StatsPage(),
-    AboutMePage()
+    AboutMePage(),
   ];
 
   _onItemTapped(int index) {
@@ -64,5 +65,12 @@ class _WidgetRootState extends State<WidgetRoot> {
         onTap: _onItemTapped,
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    countriesBloc.dispose();
+    totalDataBloc.dispose();
+    super.dispose();
   }
 }

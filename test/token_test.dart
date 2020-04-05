@@ -1,4 +1,4 @@
-import 'package:coronavirus/api/client.dart';
+import 'package:coronavirus/resource/country_api_provider.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
