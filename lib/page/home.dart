@@ -1,9 +1,11 @@
-import 'package:coronavirus/bloc/countries_bloc.dart';
 import 'package:coronavirus/model/CountriesData.dart';
+import 'package:coronavirus/model/CountriesWithTotalData.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class HomePage extends StatefulWidget {
+  final CountriesWithTotalData cwtd = CountriesWithTotalData.instance;
+
   @override
   _HomePageState createState() => _HomePageState();
 }
@@ -16,34 +18,21 @@ class _HomePageState extends State<HomePage>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return StreamBuilder(
-      stream: countriesBloc.countriesData,
-      builder: (context, AsyncSnapshot<CountriesData> snapshot) {
-        if (snapshot.hasData) {
-          return SafeArea(
-            top: true,
-            bottom: true,
-            right: true,
-            left: true,
-            child: ListView.builder(
-              physics: BouncingScrollPhysics(),
-              itemCount: snapshot.data.countries.length,
-              itemBuilder: ((context, index) {
-                return _countryCardBuilder(
-                  snapshot.data.countries,
-                  index,
-                );
-              }),
-            ),
+    return SafeArea(
+      top: true,
+      bottom: true,
+      right: true,
+      left: true,
+      child: ListView.builder(
+        physics: BouncingScrollPhysics(),
+        itemCount: widget.cwtd.countriesData.countries.length,
+        itemBuilder: ((context, index) {
+          return _countryCardBuilder(
+            widget.cwtd.countriesData.countries,
+            index,
           );
-        } else if (snapshot.hasError) {
-          return null;
-        } else {
-          return Center(
-            child: CircularProgressIndicator(),
-          );
-        }
-      },
+        }),
+      ),
     );
   }
 
