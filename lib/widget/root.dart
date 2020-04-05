@@ -16,11 +16,6 @@ class _WidgetRootState extends State<WidgetRoot> {
   int _selectedIndex = 0;
   String _selectedTitle = "#StayAtHomeSaveLives";
 
-  _WidgetRootState() {
-    countriesBloc.fetchCountries();
-    totalDataBloc.fetchTotalData();
-  }
-
   final List<String> _titles = <String>[
     '#StayAtHomeSaveLives',
     'Stats',
