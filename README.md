@@ -1,16 +1,27 @@
-# Corona Virus Tracker
+<h2 align="center">Corona Virus Tracker</h2>
+<p align="center">
+   A new way to track corona virus on your Android device
+</p>
 
-A new way to track corona virus
+<div align="center">
+  
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/18f2269cb2ec40d9a4b7309d982ebe29)](https://www.codacy.com/manual/orhantgrl/coronavirus?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=orhantgrl/coronavirus&amp;utm_campaign=Badge_Grade)
+![Completion](https://img.shields.io/badge/completion-%25100-succsses)
+![License](https://img.shields.io/github/license/orhantgrl/coronavirus)
+![Issues](https://img.shields.io/github/issues/orhantgrl/coronavirus)
+![Last Commit](https://img.shields.io/github/last-commit/orhantgrl/coronavirus)
+![Stars](https://img.shields.io/github/stars/orhantgrl/coronavirus)
+![Watchers](https://img.shields.io/github/watchers/orhantgrl/coronavirus)
 
-## Getting Started
+</div>
 
-This project is a starting point for a Flutter application.
+<br>
 
-A few resources to get you started if this is your first Flutter project:
+### Images
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+<p float="left" align="center">
+  <img src="images/splash_page.png" width="200" />
+  <img src="images/home_page.png" width="200" />
+  <img src="images/status_page.png" width="200" /> 
+  <img src="images/about_me_page.png" width="200" />
+</p>
