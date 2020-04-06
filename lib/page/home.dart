@@ -24,7 +24,6 @@ class _HomePageState extends State<HomePage>
       right: true,
       left: true,
       child: ListView.builder(
-        physics: BouncingScrollPhysics(),
         itemCount: widget.cwtd.countriesData.countries.length,
         itemBuilder: ((context, index) {
           return _countryCardBuilder(
