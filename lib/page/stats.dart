@@ -187,14 +187,23 @@ List<charts.Series<ChartData, String>> _createTotalDataChartSeries(
 List<charts.Series<ChartData, String>> _createCountryDataChart(
     Country country) {
   final _countryData = [
-    new ChartData("Deaths", num.parse(country.totalDeaths.replaceAll(',', ''))),
+    new ChartData(
+      "Deaths",
+      country.totalDeaths.isEmpty
+          ? 0
+          : num.parse(country.totalDeaths.replaceAll(',', '')),
+    ),
     new ChartData(
       'Cases',
-      num.parse(country.totalCases.replaceAll(',', '')),
+      country.totalCases.isEmpty
+          ? 0
+          : num.parse(country.totalCases.replaceAll(',', '')),
     ),
     new ChartData(
       'Recovered',
-      num.parse(country.totalRecovered.replaceAll(',', '')),
+      country.totalRecovered.isEmpty
+          ? 0
+          : num.parse(country.totalRecovered.replaceAll(',', '')),
     )
   ];
 
