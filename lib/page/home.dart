@@ -40,9 +40,9 @@ class _HomePageState extends State<HomePage>
         clipBehavior: Clip.antiAlias,
         elevation: 3.0,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8),
+          borderRadius: BorderRadius.circular(10.0),
         ),
-        margin: new EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
+        margin: new EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 0.0),
         child: Container(
           decoration: BoxDecoration(),
           child: _countryCardListTileBuilder(countries, index),
@@ -68,121 +68,130 @@ class _HomePageState extends State<HomePage>
               ),
             ],
           ),
-
-          // First Row
           Container(
-            padding: EdgeInsets.all(16.0),
+            height: 100.0,
+            padding: EdgeInsets.only(top: 16.0, bottom: 16.0),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisSize: MainAxisSize.max,
               children: <Widget>[
-                Row(
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    SvgPicture.asset(
-                      'graphics/virus.svg',
-                      width: 24.0,
-                      height: 24.0,
+                    Row(
+                      children: <Widget>[
+                        SvgPicture.asset(
+                          'graphics/virus.svg',
+                          width: 24.0,
+                          height: 24.0,
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(left: 8),
+                          child: Text(countries[index].totalCases.isEmpty
+                              ? "None"
+                              : countries[index].totalCases),
+                        )
+                      ],
                     ),
-                    Padding(
-                      padding: EdgeInsets.only(left: 8),
-                      child: Text(countries[index].totalCases.isEmpty
-                          ? "None"
-                          : countries[index].totalCases),
+                    Row(
+                      children: <Widget>[
+                        SvgPicture.asset(
+                          'graphics/death.svg',
+                          width: 24.0,
+                          height: 24.0,
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(left: 8),
+                          child: Text(countries[index].newDeaths.isEmpty
+                              ? "None"
+                              : countries[index].newDeaths),
+                        )
+                      ],
                     )
                   ],
                 ),
-                Row(
-                  children: <Widget>[
-                    SvgPicture.asset(
-                      'graphics/skull.svg',
-                      width: 24.0,
-                      height: 24.0,
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(left: 8),
-                      child: Text(countries[index].totalDeaths.isEmpty
-                          ? "None"
-                          : countries[index].totalDeaths),
-                    )
-                  ],
+                Padding(
+                  padding: EdgeInsets.only(left: 16.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Row(
+                        children: <Widget>[
+                          SvgPicture.asset(
+                            'graphics/skull.svg',
+                            width: 24.0,
+                            height: 24.0,
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(left: 8),
+                            child: Text(countries[index].totalDeaths.isEmpty
+                                ? "None"
+                                : countries[index].totalDeaths),
+                          )
+                        ],
+                      ),
+                      Row(
+                        children: <Widget>[
+                          SvgPicture.asset(
+                            'graphics/recover.svg',
+                            width: 24.0,
+                            height: 24.0,
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(left: 8),
+                            child: Text(countries[index].totalRecovered.isEmpty
+                                ? "None"
+                                : countries[index].totalRecovered),
+                          )
+                        ],
+                      )
+                    ],
+                  ),
                 ),
-                Row(
-                  children: <Widget>[
-                    SvgPicture.asset(
-                      'graphics/new.svg',
-                      width: 24.0,
-                      height: 24.0,
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(left: 8),
-                      child: Text(countries[index].newCases.isEmpty
-                          ? "None"
-                          : countries[index].newCases),
-                    )
-                  ],
-                ),
-              ],
-            ),
-          ),
-
-          // Second Row
-          Container(
-            padding: EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 16.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: <Widget>[
-                Row(
-                  children: <Widget>[
-                    SvgPicture.asset(
-                      'graphics/death.svg',
-                      width: 24.0,
-                      height: 24.0,
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(left: 8),
-                      child: Text(countries[index].newDeaths.isEmpty
-                          ? "None"
-                          : countries[index].newDeaths),
-                    )
-                  ],
-                ),
-                Row(
-                  children: <Widget>[
-                    SvgPicture.asset(
-                      'graphics/recover.svg',
-                      width: 24.0,
-                      height: 24.0,
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(left: 8),
-                      child: Text(countries[index].totalRecovered.isEmpty
-                          ? "None"
-                          : countries[index].totalRecovered),
-                    )
-                  ],
-                ),
-                Row(
-                  children: <Widget>[
-                    SvgPicture.asset(
-                      'graphics/cough.svg',
-                      width: 24,
-                      height: 24,
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(left: 8),
-                      child: Text(countries[index].activeCases.isEmpty
-                          ? "None"
-                          : countries[index].activeCases),
-                    )
-                  ],
+                Padding(
+                  padding: EdgeInsets.only(left: 16.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Row(
+                        children: <Widget>[
+                          SvgPicture.asset(
+                            'graphics/new.svg',
+                            width: 24.0,
+                            height: 24.0,
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(left: 8),
+                            child: Text(countries[index].newCases.isEmpty
+                                ? "None"
+                                : countries[index].newCases),
+                          )
+                        ],
+                      ),
+                      Row(
+                        children: <Widget>[
+                          SvgPicture.asset(
+                            'graphics/cough.svg',
+                            width: 24,
+                            height: 24,
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(left: 8),
+                            child: Text(countries[index].activeCases.isEmpty
+                                ? "None"
+                                : countries[index].activeCases),
+                          )
+                        ],
+                      ),
+                    ],
+                  ),
                 )
               ],
             ),
-          ),
+          )
         ],
       );
-
-  @override
-  void dispose() {
-    super.dispose();
-  }
 }
