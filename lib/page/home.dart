@@ -69,9 +69,9 @@ class _HomePageState extends State<HomePage>
           ),
           Container(
             height: 100.0,
-            padding: EdgeInsets.only(top: 16.0, bottom: 16.0),
+            padding: EdgeInsets.fromLTRB(35.0, 16.0, 35.0, 16.0),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               mainAxisSize: MainAxisSize.max,
               children: <Widget>[
                 Column(
