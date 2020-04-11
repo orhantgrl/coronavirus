@@ -1,30 +1,49 @@
-import 'package:coronavirus/resource/country_api_provider.dart';
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:coronavirus/model/TotalData.dart';
 import 'package:coronavirus/model/CountriesData.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-
+import 'package:http/http.dart';
 
 void main() {
-  test('Test for countries data', () async {
-    var client = CountryApiProvider();
-    String token = ''; // Your secret api token :)
+  CountriesData countriesData;
+  TotalData totalData;
 
-    client.token = token;
-    await client.fetchCountriesData().then((CountriesData api) {
-      expect('China', api.countries[0].name); // Passed
+  _testRequest({@required String url}) async {
+    Client client = Client();
+    return await client.get(url, headers: {
+      HttpHeaders.contentTypeHeader: 'application/json',
+      HttpHeaders.authorizationHeader: "" // Your secret api token :)
     });
+  }
+
+  test('Test for countries data', () async {
+    final response = await _testRequest(
+      url: "https://api.collectapi.com/corona/countriesData",
+    );
+
+    if (response.statusCode == 200) {
+      countriesData = CountriesData.fromJson(jsonDecode(response.body));
+    } else {
+      throw Exception('Failed to load countries data');
+    }
+
+    expect(false, countriesData.countries.isEmpty); // Passed
   });
 
   test('Test for total data', () async {
-    var client = CountryApiProvider();
-    String token = ''; // Your secret api token :)
+    final response = await _testRequest(
+      url: "https://api.collectapi.com/corona/totalData",
+    );
 
-    client.token = token;
-    await client.fetchTotalData().then((TotalData data) {
-      /* Check current death of number here: 
-       * https://www.worldometers.info/coronavirus/coronavirus-death-toll/
-       */
-      expect('17,138', data.totalDeaths); // Passed
-    });
+    if (response.statusCode == 200) {
+      totalData = TotalData.fromJson(jsonDecode(response.body)['result']);
+    } else {
+      throw Exception('Failed to load countries data');
+    }
+    expect(0,
+        isNot(num.parse(totalData.totalDeaths.replaceAll(',', '')))); // Passed
   });
 }
