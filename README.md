@@ -17,7 +17,7 @@
 
 <br>
 
-### Images
+<h3 align="center">Images</h3>
 
 <p float="left" align="center">
   <img src="images/splash_page.png" width="200" />
